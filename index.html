@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flight Ticket Booker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+    <style>
+        body {
+    padding: 20px;
+    max-width: 600px;
+    margin: auto;
+    color: #e0e0e0;
+    font-family: "Nunito", sans-serif;
+
+    background: linear-gradient(135deg, #120c16, #301b43, #260841);
+    background-size: 400% 400%;
+    animation: gradientMove 12s ease infinite;
+}
+.filter-box {
+    background: #242323;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+    border: 1px solid #000000;
+}
+
+        input, button { margin: 5px 0; padding: 10px; width: 100%; box-sizing: border-box; border-radius: 4px; background-color: #1e1e1e; color: white; border: 1px solid #444; }
+
+        button { background: #521578; cursor: pointer; font-weight: bold; border: none; font-family: "Nunito", sans-serif; font-size: 0.95em;}
+
+        button:hover { background: #320e5f; }
+        
+
+        .flight-card strong{
+            font-size: 1.70em;
+        }
+
+        #results .flight-card { background: #201f1f; padding: 15px; border-radius: 8px; margin-bottom: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        
+         }
+
+         @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }    
+}
+    </style>
+</head>
+<body>
+
+    <h2>Find Your Flight</h2>
+
+    <div class="filter-box">
+        <label>From:</label>
+        <input type="text" id="fromCity" placeholder="e.g. Mumbai">
+        
+        <label>To:</label>
+        <input type="text" id="toCity" placeholder="e.g. Delhi">
+
+        <button onclick="searchFlights()">Search</button>
+    </div>
+
+    <div id="results"></div>
+<script>
+const flights = [
+    ["Air India", "Mumbai", "Delhi", 4500,"02hr 10min"],
+    ["Indigo", "Bangalore", "Chennai", 3200,"01hr"],
+    ["Indigo", "Mumbai", "Bangalore", 5000,"01hr 50min"],
+    ["Air India", "Delhi", "Bangalore", 6500,"20hr 50min"],
+    ["Indigo", "Delhi", "Bangalore", 6000,"02hr 50min"],
+    ["SpiceJet", "Delhi", "Mumbai", 4200,"02hr 10min"]
+];
+
+function searchFlights() {
+    const source = document.getElementById("fromCity").value.trim().toLowerCase();
+    const destination = document.getElementById("toCity").value.trim().toLowerCase();
+    const resultDiv = document.getElementById("results");
+
+    resultDiv.innerHTML = "";
+
+    let found = false;
+
+    for (let i = 0; i < flights.length; i++) {
+        if (
+            flights[i][1].toLowerCase() === source &&
+            flights[i][2].toLowerCase() === destination
+        ) {
+            resultDiv.innerHTML += `
+                <div class="flight-card">
+                    <strong>${flights[i][0]}</strong><br><br>
+                    Route: ${flights[i][1]} → ${flights[i][2]}<br>
+                    Time: ${flights[i][4]}<br>
+                    Price: ₹${flights[i][3]}
+                </div>
+            `;
+            found = true;
+        }
+    }
+
+    if (!found) {
+        resultDiv.innerHTML = `<div class="flight-card">❌ No flights found for this route.</div>`;
+    }
+}
+</script>
+</body>
+</html>
